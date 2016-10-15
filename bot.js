@@ -1,9 +1,12 @@
 
 var fs = require("fs");
-var jsonfile = require("jsonfile");
+//var jsonfile = require("jsonfile");
 var request = require("request");
 var cheerio = require("cheerio");
 var nlp = require("nlp_compromise");
+var app = require('http').createServer();
+var io = require('socket.io')(app);
+var sleep = require('sleep');
 
 var initUrl = "http://www.bbc.co.uk/news/uk";
 
@@ -12,6 +15,35 @@ var file = "articles.json";
 
 var i = 0;
 var s = 6;
+
+// Connecting to the client using web sockets
+io.on('connection', function(socket){
+	console.log('Connection from a user!');
+
+
+    socket.on('generate', function (data) {
+        console.log("Generating...");
+
+        do_all();
+
+        sleep.sleep(10);
+
+
+
+        console.log(JSON.stringify(articles));
+
+
+    });
+
+    socket.on('connect_failed', function() {
+        console.log("Error!");
+    })
+});
+
+
+
+
+app.listen(8888);
 
 function process_nlp(sentence) {
 	sentence = nlp.sentence(sentence).replace("[Place]", "Lithuania").text();
@@ -50,17 +82,17 @@ function do_request(init_url, base_url, a_class, t_class, p_class) {
 						obj.title = title;
 						obj.body = text;
 						articles.push(obj);
-						console.log(obj);
-						jsonfile.writeFile(file, articles, function(err) {
-							// console.log(err);
-						});
+
+						// jsonfile.writeFile(file, articles, function(err) {
+						// 	// console.log(err);
+						// });
 						// if(text) {
 						// 	sentences.forEach(function(sentence) {
 						// 		article = article + sentence +"\n";
 						// 	});
 						// 	articles.push(article);
 						// 	console.log("pushed");
-						// 	console.log(articles[i++]);
+							//console.log(JSON.stringify(articles));
 						// 	console.log("=======================")
 						// }
 					}
@@ -79,7 +111,7 @@ function do_all(){
 
 }
 
-do_all();
+//do_all();
 // do_request("http://www.bbc.co.uk/news/uk", "http://www.bbc.co.uk", ".faux-block-link__overlay-link", ".story-body__inner");
 // do_request("https://www.theguardian.com/uk", "https://www.theguardian.com", ".u-faux-block-link__overlay", ".content__article-body");
 // do_request("http://www.reuters.com", "http://www.reuters.com", ".story-title a", "#article-text");

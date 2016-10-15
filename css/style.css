@@ -17,7 +17,7 @@
 }
 
 .logo {
-    margin-left: 140px;
+    margin-left: 22vh;
     width:304px;
     height:228px;
 }
@@ -46,7 +46,7 @@
 }
 
 .modal-dialog  {
-    width:40%;
+    width:23%;
 }
 
 #modal {
@@ -57,4 +57,14 @@
 #troll {
     width: 304px;
     height: 310px;
+}
+
+.text{
+    text-align: center;
+    font-size: 16px;
+}
+
+.login {
+
+
 }
