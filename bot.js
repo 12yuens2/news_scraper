@@ -1,20 +1,29 @@
-
 var fs = require("fs");
-//var jsonfile = require("jsonfile");
 var request = require("request");
 var cheerio = require("cheerio");
 var nlp = require("nlp_compromise");
-var app = require('http').createServer();
-var io = require('socket.io')(app);
-var sleep = require('sleep');
+var express = require('express');
+var app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
+// Constans
+var port = 18197;
+var i = 0;
+var s = 6;
 var initUrl = "http://www.bbc.co.uk/news/uk";
-
 var articles = [];
 var file = "articles.json";
 
-var i = 0;
-var s = 6;
+
+
+app.use(express.static('public'));
+
+
+
+http.listen(port, function(){
+    console.log('listening on :' + port);
+});
 
 // Connecting to the client using web sockets
 io.on('connection', function(socket){
@@ -22,15 +31,15 @@ io.on('connection', function(socket){
 
 
     socket.on('generate', function (data) {
-        console.log("Generating...");
-
-        do_all();
-
-        sleep.sleep(10);
-
-
-
-        console.log(JSON.stringify(articles));
+        // console.log("Generating...");
+        //
+        // do_all();
+        //
+        // sleep.sleep(10);
+        //
+        //
+        //
+        // console.log(JSON.stringify(articles));
 
 
     });
@@ -40,10 +49,6 @@ io.on('connection', function(socket){
     })
 });
 
-
-
-
-app.listen(8888);
 
 function process_nlp(sentence) {
 	sentence = nlp.sentence(sentence).replace("[Place]", "Lithuania").text();
