@@ -1,0 +1,70 @@
+.well h2{
+	text-align: center;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 97vh;
+
+
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+    margin-left: 22vh;
+    width:304px;
+    height:228px;
+}
+
+.modal-backdrop.in {
+    filter: alpha(opacity=50);
+    opacity: .8;
+}
+
+.modal-content {
+    background-color: #ececec;
+    border: 1px solid #bdc3c7;
+    border-radius: 0px;
+    outline: 0;
+}
+
+.modal-body {
+    position: relative;
+    padding: 5px 15px 5px 15px;
+}
+
+.modal-footer {
+    padding: 15px 15px 15px 15px;
+    text-align: left;
+    border-top: 0px;
+}
+
+.modal-dialog  {
+    width:23%;
+}
+
+#modal {
+    top:10%;
+    outline: none;
+}
+
+#troll {
+    width: 304px;
+    height: 310px;
+}
+
+.text{
+    text-align: center;
+    font-size: 16px;
+}
+
+.login {
+
+
+}
