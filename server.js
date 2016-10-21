@@ -20,7 +20,9 @@ io.sockets.on('connection', function (socket) {
 
     // On generate request generating a customised site for the user and sending it to the client
     socket.on('generate', function () {
-        console.log("generate request");
+        do_all(function(articles) {
+            io.emit("response", articles);
+        });
     });
 });
 
