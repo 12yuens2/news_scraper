@@ -1,5 +1,6 @@
 var querystring = require("querystring");
 var https = require("https");
+var sleep = require("sleep");
 
 var host = "api.textrazor.com";
 
@@ -7,7 +8,35 @@ var api_key = "88165ec1a0d94288fce4a214888cd695b38a47f0cf2ec24784ec76fe";
 
 var friends = ["Sizhe Yuen", "Bhargava Jariwala", "Andrew Spence", "Hakkon Thor Brunstad", "James Moran", "Keno Schwalb", "Patrick Schrempf", "Martynas Noreika", "Bipaswi Man Shakya", "Christmas Egle Valkunaite", "Mohammed Saadat"];
 
-function parse_response(entities) {
+var current_requests = 0;
+
+module.exports = {
+    change_text: function (text, callback) {
+        // if (current_requests === 1) {
+        //     sleep.sleep(Math.floor(Math.random() * 10) + 1);
+        //     current_requests--;
+        // } else {
+        //     current_requests++;
+        // }
+        make_request("POST", text, function(response) {
+            if (JSON.parse(response)["response"] != undefined) {
+                var entities = JSON.parse(response)["response"]["entities"];
+
+                // console.log(entities);
+                text = parse_response(entities, text);
+                callback(text);
+
+            } else {
+                console.log("too many requests");
+                // setTimeout(f(text, callback), 1000);
+                callback("");
+            }
+        });
+    }
+}
+
+
+function parse_response(entities, news) {
     var friend_map = [];
     var friend_count = 0;
     for (var i = 0; i<entities.length; i++) {
@@ -25,11 +54,13 @@ function parse_response(entities) {
                 news = news.replace(entity["matchedText"], friend);
             }
 
-            // if (entity["type"].indexOf("Place") > -1) {
-            //     news = news.replace(entity["matchedText"], "St. Andrews")
-            // }
+            if (entity["type"].indexOf("Place") > -1) {
+                news = news.replace(entity["matchedText"], "St. AAAAndrews")
+            }
         }
     }
+
+    return news;
 }
 
 
@@ -74,18 +105,10 @@ function make_request(method, data, callback) {
     req.end();
 }
 
-var news = "Raine Spencer, stepmother of Diana, Princess of Wales, has died at 87 after a short illness, her family has announced.Countess Spencer died on Friday morning at her London home, her son William Legge, the Earl of Dartmouth and a UKIP MEP, confirmed.Her marriage to Diana's father Earl Spencer from 1976 to 1992 was the second of three in her life.She was the daughter of romance novelist Dame Barbara Cartland.In her early life, she served as a Westminster city councillor from 1954 to 1965.Her first marriage was to the Earl of Dartmouth and lasted from 1948 to 1976.Following the death of Earl Spencer, her second husband, she married Count Jean-Francois de Chambrun in 1993, but the marriage only lasted three years.When she married Earl Spencer and moved into the ancestral home at Althorp, she became stepmother to six-year-old Diana and three-year-old Charles, who now holds his father's title.For many years, she was on the board of directors at department store Harrods.";
-var new_news = "";
+// var news = "Raine Spencer, stepmother of Diana, Princess of Wales, has died at 87 after a short illness, her family has announced.Countess Spencer died on Friday morning at her London home, her son William Legge, the Earl of Dartmouth and a UKIP MEP, confirmed.Her marriage to Diana's father Earl Spencer from 1976 to 1992 was the second of three in her life.She was the daughter of romance novelist Dame Barbara Cartland.In her early life, she served as a Westminster city councillor from 1954 to 1965.Her first marriage was to the Earl of Dartmouth and lasted from 1948 to 1976.Following the death of Earl Spencer, her second husband, she married Count Jean-Francois de Chambrun in 1993, but the marriage only lasted three years.When she married Earl Spencer and moved into the ancestral home at Althorp, she became stepmother to six-year-old Diana and three-year-old Charles, who now holds his father's title.For many years, she was on the board of directors at department store Harrods.";
 
-make_request("POST", news, function(response) {
-    var entities = JSON.parse(response)["response"]["entities"];
+function change_text(text) {
 
-    console.log(entities);
-
-
-    parse_response(entities);
-
-    console.log(news);
-});
+}
 
 
