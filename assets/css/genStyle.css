@@ -2,17 +2,10 @@
     margin-top: 80px;
 }
 
-.shareFacebook {
-    width: 16vh;
-    height: 3vh;
-    margin-top: 8px;
-    left: 20px;
-}
-
 .shareLink {
     width: 15vh;
     height: 3vh;
-    margin-top: 8px;
+    margin-top: 2px;
     margin-left: 7px;
 }
 
