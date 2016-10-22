@@ -1,7 +1,7 @@
 window.fbAsyncInit = function() {
   FB.init({
     appId      : '663533450471602',
-    channelUrl : 'https://vn5.host.cs.st-andrews.ac.uk',
+    channelUrl : 'https://mn55.host.cs.st-andrews.ac.uk',
     xfbml      : true,
     version    : 'v2.8'
   });
