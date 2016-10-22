@@ -2,29 +2,32 @@
 var request = require("request");
 var cheerio = require("cheerio");
 var schedule = require("node-schedule");
+var fs = require("fs");
 
 
-// Server constants
-// var port = 5000; // WebSocket connection port
-// var i = 0;
-// var s = 6;
-// var initUrl = "http://www.bbc.co.uk/news/uk";
-// var articles = [];
-// var file = article_file;
-//
-// // Initialising the socket.io object which abstracts web sockets
-// var io = require('socket.io').listen(port);
-//
-// // Dealing with new user connection
-// io.sockets.on('connection', function (socket) {
-//
-//     // On generate request generating a customised site for the user and sending it to the client
-//     socket.on('generate', function () {
-//         get_new_articles(function(articles) {
-//             io.emit("response", articles);
-//         });
-//     });
-// });
+//Server constants
+var port = 5000; // WebSocket connection port
+var i = 0;
+var s = 6;
+var initUrl = "http://www.bbc.co.uk/news/uk";
+var articles = [];
+var file = article_file;
+
+// Initialising the socket.io object which abstracts web sockets
+var io = require('socket.io').listen(port);
+
+// Dealing with new user connection
+io.sockets.on('connection', function (socket) {
+
+    // On generate request generating a customised site for the user and sending it to the client
+    socket.on('generate', function (data) {
+
+        var result = JSON.parse(fs.readFileSync('./articles.json', 'utf8'));
+
+       io.emit("response", result);
+
+    });
+});
 
 
 //Other constants
@@ -118,3 +121,4 @@ var j =  schedule.scheduleJob({hour: 09, minute: 00}, function() {
 	console.log("fetching new articles...");
 	get_new_articles();
 });
+
