@@ -2,13 +2,13 @@
 var request = require("request");
 var cheerio = require("cheerio");
 var schedule = require("node-schedule");
+var fs = require("fs");
 var sleep = require("sleep-async")();
-
 var nlp = require("./api.js");
 
 
 
-// Server constants
+//Server constants
 var port = 5000; // WebSocket connection port
 var i = 0;
 var s = 6;
@@ -23,10 +23,12 @@ var io = require('socket.io').listen(port);
 io.sockets.on('connection', function (socket) {
 
     // On generate request generating a customised site for the user and sending it to the client
-    socket.on('generate', function () {
-        get_new_articles(function(articles) {
-            io.emit("response", articles);
-        });
+    socket.on('generate', function (data) {
+
+        var result = JSON.parse(fs.readFileSync('./articles.json', 'utf8'));
+
+       io.emit("response", result);
+
     });
 });
 
@@ -42,10 +44,10 @@ function get_article(init_url, base_url, a_class, t_class, p_class, callback) {
 			var page = cheerio.load(body);
 			var links = page(a_class);
 
-			var callCount = 6;
+			var callCount = links.length;
 
 			//go scrape each link
-			for (var i = 0; i < 6; i++) {
+			for (var i = 0; i < links.length; i++) {
 				var link = links[i];
 
 				var href = link["attribs"]["href"];
@@ -57,6 +59,7 @@ function get_article(init_url, base_url, a_class, t_class, p_class, callback) {
 					url = url.concat(href);
 				}
 
+				//get text from each link
 				request(url, function (error, response, body) {
 					if (!error) {
 
@@ -141,3 +144,4 @@ var j =  schedule.scheduleJob({hour: 09, minute: 00}, function() {
 	console.log("fetching new articles...");
 	get_new_articles();
 });
+
