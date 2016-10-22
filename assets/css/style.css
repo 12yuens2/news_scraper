@@ -17,9 +17,11 @@
 }
 
 .logo {
-    margin-left: 22vh;
-    width:304px;
-    height:228px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 304px;
+    height: 228px;
 }
 
 .modal-backdrop.in {
@@ -46,7 +48,7 @@
 }
 
 .modal-dialog  {
-    width:23%;
+    width:30vw;
 }
 
 #modal {
@@ -67,4 +69,11 @@
 .login {
 
 
+}
+
+@media only screen
+and (min-width : 1824px) {
+    .modal-dialog  {
+        width:23vw;
+    }
 }

@@ -2,10 +2,17 @@
     margin-top: 80px;
 }
 
+.shareFacebook {
+    width: 7vw;
+    height: 30px;
+    margin-top: 8px;
+    left: 20px;
+}
+
 .shareLink {
-    width: 15vh;
-    height: 3vh;
-    margin-top: 2px;
+    width: 7vw;
+    height: 30px;
+    margin-top: 8px;
     margin-left: 7px;
 }
 
@@ -16,3 +23,4 @@
 .jumbotron .container {
     max-width: 100%;
 }
+
