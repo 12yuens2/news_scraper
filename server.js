@@ -9,28 +9,24 @@ var nlp = require("./api.js");
 
 
 //Server constants
-// var port = 5000; // WebSocket connection port
-// var i = 0;
-// var s = 6;
-// var initUrl = "http://www.bbc.co.uk/news/uk";
-// var articles = [];
-// var file = article_file;
-//
-// // Initialising the socket.io object which abstracts web sockets
-// var io = require('socket.io').listen(port);
-//
-// // Dealing with new user connection
-// io.sockets.on('connection', function (socket) {
-//
-//     // On generate request generating a customised site for the user and sending it to the client
-//     socket.on('generate', function (data) {
-//
-//         var result = JSON.parse(fs.readFileSync('./articles.json', 'utf8'));
-//
-//        io.emit("response", result);
-//
-//     });
-// });
+var port = 5000; // WebSocket connection port
+
+
+// Initialising the socket.io object which abstracts web sockets
+var io = require('socket.io').listen(port);
+
+// Dealing with new user connection
+io.sockets.on('connection', function (socket) {
+
+    // On generate request generating a customised site for the user and sending it to the client
+    socket.on('generate', function (data) {
+
+        var result = JSON.parse(fs.readFileSync('./articles.json', 'utf8'));
+
+       io.emit("response", result);
+
+    });
+});
 
 
 //Other constants
