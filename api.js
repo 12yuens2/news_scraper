@@ -1,5 +1,6 @@
 var querystring = require("querystring");
 var https = require("https");
+var fs = require("fs");
 
 
 //API constants
@@ -17,25 +18,35 @@ module.exports = {
      * @param text - Text to be processed by the API
      * @param callback - Function that is called after API is returned and text is processed. Parameter of callback is the changed text.
      */
-    change_text: function (text, callback) {
+    change_text: function (fb_friends) {
+        console.log(fb_friends);
+        var articles_json = JSON.parse(fs.readFileSync("articles.json"))
+        var processed_json = [];
+
+        for (var i = 0; i < articles_json.length; i++) {
+            var article = articles_json[i];
+            var processed_article = new Object();
+
+            processed_article.title = article.title;
+            processed_article.body = parse_response(article.entities, fb_friends, article.body);
+
+            processed_json.push(processed_article);
+        }
+
+        return processed_json;
+    },
+
+    request_api: function(text, callback) {
         make_request("POST", text, function(response) {
             if (JSON.parse(response)["response"] != undefined) {
-                var entities = JSON.parse(response)["response"]["entities"];
-
-                text = parse_response(entities, text);
-                callback(text);
-
+                callback(JSON.parse(response)["response"]["entities"]);
             } else {
-                //API returned false
-                console.log(response);
                 callback("");
             }
         });
+
     },
 
-    update_friends: function(friends_list) {
-        friends = friends_list;
-    }
 }
 
 /**
@@ -44,9 +55,10 @@ module.exports = {
  * @param text - Text to be changed passed on the entities
  * @returns {*} - The changed text
  */
-function parse_response(entities, text) {
+function parse_response(entities, fb_friends, text) {
     var friend_map = [];
     var friend_count = 0;
+    // var friends = fb_friends;
     for (var i = 0; i<entities.length; i++) {
         var entity = entities[i];
         if (entity["type"]) {

@@ -12,7 +12,7 @@ var nlp = require("./api.js");
 var port = 5000; // WebSocket connection port
 
 
-// Initialising the socket.io object which abstracts web sockets
+//Initialising the socket.io object which abstracts web sockets
 var io = require('socket.io').listen(port);
 
 // Dealing with new user connection
@@ -21,7 +21,7 @@ io.sockets.on('connection', function (socket) {
     // On generate request generating a customised site for the user and sending it to the client
     socket.on('generate', function (data) {
 
-        var result = JSON.parse(fs.readFileSync('./articles.json', 'utf8'));
+        var result = nlp.change_text(data);
 
        io.emit("response", result);
 
@@ -105,23 +105,22 @@ function write_to_file(articles) {
 		// console.log("API called started at " + new Date().getTime());
 		var text = articles[i]["body"];
 		if (text != "") {
-			nlp.change_text(text, function(changed_text) {
-				if (changed_text != "" && articles[i]["title"] != undefined) {
-					articles_json = JSON.parse(fs.readFileSync(article_file));
+			nlp.request_api(text, function(entities) {
+                if (entities != "") {
+                    articles_json = JSON.parse(fs.readFileSync(article_file));
 
-					articles[i]["body"] = changed_text;
-					articles_json.push(articles[i]);
+                    articles[i].entities = entities;
+                    articles_json.push(articles[i]);
 
-					articles_json = JSON.stringify(articles_json);
-					fs.writeFileSync(article_file, articles_json);
+                    articles_json = JSON.stringify(articles_json);
+                    fs.writeFileSync(article_file, articles_json);
 
-					articles_pushed++;
-				}
+                    articles_pushed++;
+                }
 
-				// console.log("API called returned at " + new Date().getTime());
-				if (i < articles.length && articles_pushed < articles_per_site) {
-					call_api(articles, articles_pushed, i+1);
-				}
+                if (i < articles.length && articles_pushed < articles_per_site) {
+                    call_api(articles, articles_pushed, i+1);
+                }
 			});
 		} else {
 			if (i < articles.length) {
@@ -167,11 +166,9 @@ function get_new_articles() {
 	});
 }
 
-get_new_articles();
 
-//
-// var j =  schedule.scheduleJob({hour: 09, minute: 00}, function() {
-// 	console.log("fetching new articles...");
-// 	get_new_articles();
-// });
+var j =  schedule.scheduleJob({hour: 09, minute: 00}, function() {
+	console.log("fetching new articles...");
+	get_new_articles();
+});
 
