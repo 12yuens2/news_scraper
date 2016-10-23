@@ -22,6 +22,27 @@
 
     <body>
 
+        <!-- Modal | Article -->
+        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="article-title"></h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <a href="https://thecatapi.com"><img src="https://thecatapi.com/api/images/get?format=src&type=gif"></a>
+                        <p id="article-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <nav class="navbar navbar-fixed-top navbar-inverse">
             <div class="container">
                 <div class="navbar-header">
