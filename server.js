@@ -7,7 +7,6 @@ var sleep = require("sleep-async")();
 var nlp = require("./api.js");
 
 
-
 //Server constants
 var port = 18197; // WebSocket connection port
 
@@ -30,7 +29,6 @@ io.sockets.on('connection', function (socket) {
 
 
 });
-
 
 //Other constants
 var article_file = "articles.json";
@@ -183,4 +181,3 @@ var j =  schedule.scheduleJob({hour: 09, minute: 00}, function() {
 	console.log("fetching new articles...");
 	get_new_articles();
 });
-
