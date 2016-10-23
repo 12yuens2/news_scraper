@@ -65,7 +65,18 @@ function get_article(init_url, base_url, a_class, t_class, p_class, callback) {
 					if (!error) {
 
 						var page = cheerio.load(body);
-						var text = page(p_class + " p").text();
+						var text = "";
+
+						//get each paragraph
+						page(p_class + " p").each(function(i, elem) {
+							for (var i = 0; i<elem.children.length; i++) {
+								var child = elem.children[i];
+								if (child.type == "text" && child.data != undefined) {
+									text += (child.data) + "\n";
+								}
+							}
+						});
+
 						var title = page(t_class).text();
 
 						var obj = new Object();
@@ -162,6 +173,7 @@ function get_new_articles() {
 
 get_new_articles();
 
+//
 // var j =  schedule.scheduleJob({hour: 09, minute: 00}, function() {
 // 	console.log("fetching new articles...");
 // 	get_new_articles();
