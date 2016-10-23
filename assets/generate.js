@@ -12,16 +12,21 @@ if (typeof(Storage) !== "undefined") {
 
 
 socket.on('response', function(res){
-
+    articles = [];
 
     // Populating the HTML page with articles
     for (var i = 1; i < 8; i++) {
         var col = document.getElementById("col" + i);
 
+        if (res[i - 1] === undefined)
+            continue;
+
         col.innerHTML =
             "<h4><b>" + res[i - 1].title + "</b></h4>" +
             "<p>" + getIntro(res[i - 1].body) + "</p>" +
-            "<p><a class='btn btn-default' href='#' role='button'>Read Article &raquo;</a></p>";
+            "<p><a class='btn btn-default' onclick='updateArticle(" + i + ")' data-toggle='modal' data-target='#modal' role='button'>Read Article &raquo;</a></p>";
+
+        articles[i] = {"title": res[i - 1].title, "body": res[i - 1].body};
     }
 
 });
@@ -41,4 +46,11 @@ function getIntro(article) {
     }
 
     return intro + "...";
+}
+
+function updateArticle(index) {
+
+    document.getElementById('article-title').innerText = articles[index].title;
+    document.getElementById('article-text').innerText = articles[index].body;
+
 }
