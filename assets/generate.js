@@ -1,15 +1,13 @@
 var socket = io();
 var colSize = 231;
-var imageUrl;
+var fbData;
 
 //socket.emit("generate");
 
 if (typeof(Storage) !== "undefined") {
     socket.emit("generate", localStorage.getItem("friends"));
 
-    imageUrl = JSON.parse(localStorage.getItem("friends"));
-
-    console.log(imageUrl);
+    fbData = JSON.parse(localStorage.getItem("friends"));
 } else {
     console.log("Local storage not supported.");
 }
@@ -25,15 +23,22 @@ socket.on('response', function(res){
         if (res[i - 1] === undefined)
             continue;
 
-        if (col.id === "col7")
-            col.innerHTML = localStorage.getItem(("friends"));
+        if (col.id === "col7") {
+            col.innerHTML =
+                '<img src="' + fbData[0]['picture'].data.url + '" alt="Article picture" style="width:10em;height:10em;">' +
+                "<h5><b>" + res[i - 1].title + "</b></h5>" +
+                "<p>" + getIntro(res[i - 1].body) + "</p>" +
+                "<p><a class='btn btn-default' onclick='updateArticle(" + i + ")' data-toggle='modal' data-target='#modal' role='button'>Read Article &raquo;</a></p>";
+
+        }
+
         else
             col.innerHTML =
                 "<h4><b>" + res[i - 1].title + "</b></h4>" +
                 "<p>" + getIntro(res[i - 1].body) + "</p>" +
                 "<p><a class='btn btn-default' onclick='updateArticle(" + i + ")' data-toggle='modal' data-target='#modal' role='button'>Read Article &raquo;</a></p>";
 
-        articles[i] = {"title": res[i - 1].title, "body": res[i - 1].body};
+        articles[i] = {"title": res[i - 1].title.replace("\n", "").replace("\<br\>", ""), "body": res[i - 1].body};
     }
 
 });
