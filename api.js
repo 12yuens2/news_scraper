@@ -31,6 +31,10 @@ module.exports = {
                 callback("");
             }
         });
+    },
+
+    update_friends: function(friends_list) {
+        friends = friends_list;
     }
 }
 
