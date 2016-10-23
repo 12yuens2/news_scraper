@@ -166,6 +166,7 @@ function get_new_articles() {
 	});
 }
 
+get_new_articles();
 
 var j =  schedule.scheduleJob({hour: 09, minute: 00}, function() {
 	console.log("fetching new articles...");
