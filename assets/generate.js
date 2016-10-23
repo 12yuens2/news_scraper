@@ -1,11 +1,15 @@
 var socket = io();
 var colSize = 231;
-var friends;
+var imageUrl;
 
 //socket.emit("generate");
 
 if (typeof(Storage) !== "undefined") {
     socket.emit("generate", localStorage.getItem("friends"));
+
+    imageUrl = JSON.parse(localStorage.getItem("friends"));
+
+    console.log(imageUrl);
 } else {
     console.log("Local storage not supported.");
 }
@@ -21,10 +25,13 @@ socket.on('response', function(res){
         if (res[i - 1] === undefined)
             continue;
 
-        col.innerHTML =
-            "<h4><b>" + res[i - 1].title + "</b></h4>" +
-            "<p>" + getIntro(res[i - 1].body) + "</p>" +
-            "<p><a class='btn btn-default' onclick='updateArticle(" + i + ")' data-toggle='modal' data-target='#modal' role='button'>Read Article &raquo;</a></p>";
+        if (col.id === "col7")
+            col.innerHTML = localStorage.getItem(("friends"));
+        else
+            col.innerHTML =
+                "<h4><b>" + res[i - 1].title + "</b></h4>" +
+                "<p>" + getIntro(res[i - 1].body) + "</p>" +
+                "<p><a class='btn btn-default' onclick='updateArticle(" + i + ")' data-toggle='modal' data-target='#modal' role='button'>Read Article &raquo;</a></p>";
 
         articles[i] = {"title": res[i - 1].title, "body": res[i - 1].body};
     }
