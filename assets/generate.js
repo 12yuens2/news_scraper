@@ -17,16 +17,19 @@ socket.on('response', function(res){
     articles = [];
 
     // Populating the HTML page with articles
-    for (var i = 1; i < 8; i++) {
+    for (var i = 1; i < 10; i++) {
         var col = document.getElementById("col" + i);
+
+        res[i - 1].title = res[i - 1].title.replace(/\n/g, "");
+        res[i - 1].body = res[i - 1].body.replace(/\n/g, "");
 
         if (res[i - 1] === undefined)
             continue;
 
-        if (col.id === "col7") {
+        if (col.id === "col1") {
             col.innerHTML =
                 '<img src="' + fbData[0]['picture'].data.url + '" alt="Article picture" style="width:10em;height:10em;">' +
-                "<h5><b>" + res[i - 1].title + "</b></h5>" +
+                "<h4><b>" + res[i - 1].title + "</b></h4>" +
                 "<p>" + getIntro(res[i - 1].body) + "</p>" +
                 "<p><a class='btn btn-default' onclick='updateArticle(" + i + ")' data-toggle='modal' data-target='#modal' role='button'>Read Article &raquo;</a></p>";
 
@@ -38,9 +41,10 @@ socket.on('response', function(res){
                 "<p>" + getIntro(res[i - 1].body) + "</p>" +
                 "<p><a class='btn btn-default' onclick='updateArticle(" + i + ")' data-toggle='modal' data-target='#modal' role='button'>Read Article &raquo;</a></p>";
 
-        articles[i] = {"title": res[i - 1].title.replace("\n", "").replace("\<br\>", ""), "body": res[i - 1].body};
+        articles[i] = {"title": res[i - 1].title, "body": res[i - 1].body};
     }
 
+    socket.disconnect();
 });
 
 // Makes an short description of an article

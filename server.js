@@ -9,7 +9,7 @@ var nlp = require("./api.js");
 
 
 //Server constants
-var port = 5000; // WebSocket connection port
+var port = 18197; // WebSocket connection port
 
 
 //Initialising the socket.io object which abstracts web sockets
@@ -25,13 +25,16 @@ io.sockets.on('connection', function (socket) {
 
        io.emit("response", result);
 
+		
     });
+
+
 });
 
 
 //Other constants
 var article_file = "articles.json";
-var articles_per_site = 4;
+var articles_per_site = 6;
 
 function get_article(init_url, base_url, a_class, t_class, p_class, callback) {
 	var articles = [];
@@ -68,9 +71,18 @@ function get_article(init_url, base_url, a_class, t_class, p_class, callback) {
 							for (var i = 0; i<elem.children.length; i++) {
 								var child = elem.children[i];
 								if (child.type == "text" && child.data != undefined) {
-									text += (child.data) + "\n";
-								}
+									text += child.data;
+								} else if (child.type == "tag") {
+                                    for (var j = 0; j<child.children.length; j++) {
+                                        var grand_child = child.children[j];
+
+                                        if (grand_child.type == "text" && grand_child.data != undefined) {
+                                            text += grand_child.data;
+                                        }
+                                    }
+                                }
 							}
+
 						});
 
 						var title = page(t_class).text();
@@ -106,7 +118,7 @@ function write_to_file(articles) {
 		var text = articles[i]["body"];
 		if (text != "") {
 			nlp.request_api(text, function(entities) {
-                if (entities != "") {
+                if (entities != "" && articles[i].title != "") {
                     articles_json = JSON.parse(fs.readFileSync(article_file));
 
                     articles[i].entities = entities;
@@ -157,16 +169,15 @@ function get_new_articles() {
 		get_article("http://www.theonion.com", "http://www.theonion.com", ".handler", ".content-header", ".content-text", write_to_file);
 	});
 
-	sleep.sleep(sleep_time += sleep_time, function() {
-		get_article("https://www.theguardian.com/uk", "https://www.theguardian.com", ".u-faux-block-link__overlay", ".content__headline", ".content__article-body", write_to_file);
-	});
+	// sleep.sleep(sleep_time += sleep_time, function() {
+	// 	get_article("https://www.theguardian.com/uk", "https://www.theguardian.com", ".u-faux-block-link__overlay", ".content__headline", ".content__article-body", write_to_file);
+	// });
 
 	sleep.sleep(sleep_time += sleep_time, function() {
 		get_article("http://www.reuters.com", "http://www.reuters.com", ".story-title a", ".article-headline", "#article-text", write_to_file);
 	});
 }
 
-get_new_articles();
 
 var j =  schedule.scheduleJob({hour: 09, minute: 00}, function() {
 	console.log("fetching new articles...");
