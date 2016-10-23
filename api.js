@@ -19,7 +19,7 @@ module.exports = {
      * @param callback - Function that is called after API is returned and text is processed. Parameter of callback is the changed text.
      */
     change_text: function (fb_friends) {
-        console.log(fb_friends);
+        var friends = get_friends(fb_friends);
         var articles_json = JSON.parse(fs.readFileSync("articles.json"))
         var processed_json = [];
 
@@ -28,7 +28,7 @@ module.exports = {
             var processed_article = new Object();
 
             processed_article.title = article.title;
-            processed_article.body = parse_response(article.entities, fb_friends, article.body);
+            processed_article.body = parse_response(article.entities, friends, article.body);
 
             processed_json.push(processed_article);
         }
@@ -55,10 +55,10 @@ module.exports = {
  * @param text - Text to be changed passed on the entities
  * @returns {*} - The changed text
  */
-function parse_response(entities, fb_friends, text) {
+function parse_response(entities, friends, text) {
     var friend_map = [];
     var friend_count = 0;
-    // var friends = fb_friends;
+
     for (var i = 0; i<entities.length; i++) {
         var entity = entities[i];
         if (entity["type"]) {
@@ -70,6 +70,9 @@ function parse_response(entities, fb_friends, text) {
                 } else {
                     friend_map[entity["entityId"]] = friend;
                     friend_count++;
+                    if (friend_count > friends.length) {
+                        friend_count = 0;
+                    }
                 }
                 text = text.replace(entity["matchedText"], friend);
             }
@@ -83,6 +86,15 @@ function parse_response(entities, fb_friends, text) {
     return text;
 }
 
+
+function get_friends(fb_friends) {
+    var friends = [];
+    for (var i = 0; i<fb_friends.length; i++) {
+        var friend = fb_friends[i];
+        friends.push(friend.first_name + " " + friend.last_name);
+    }
+    return friends;
+}
 
 function make_request(method, data, callback) {
 
