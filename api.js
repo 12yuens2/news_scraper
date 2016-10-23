@@ -27,7 +27,7 @@ module.exports = {
                 callback(text);
 
             } else {
-                console.log("too many requests");
+                console.log(response);
                 // setTimeout(f(text, callback), 1000);
                 callback("");
             }
