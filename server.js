@@ -151,10 +151,11 @@ function get_articles(init_url, base_url, a_class, t_class, p_class, callback) {
 	});
 }
 
-function write_to_json(article, entities) {
+function write_to_json(article, title_entities, body_entities) {
 	var articles_json = JSON.parse(fs.readFileSync(article_file));
 
-	article.entities = entities
+	article.title_entities = title_entities;
+	article.body_entities = body_entities
 	articles_json.push(article);
 
 	articles_json = JSON.stringify(articles_json);
@@ -173,12 +174,13 @@ function write_to_file(articles) {
 	});
 
 	var call_api = function(articles, articles_pushed, i) {
-		var text = articles[i]["body"];
+		var title = articles[i]["title"];
+		var body = articles[i]["body"];
 
-		if (text != "") {
-			nlp.request_api(text, function(entities) {
-                if (entities != "" && articles[i].title != "") {
-                	write_to_json(articles[i], entities);
+		if (title != "" && body != "") {
+			nlp.request_api(title, body, function(title_entities, body_entities) {
+                if (body_entities != "" && articles[i].title != "") {
+                	write_to_json(articles[i], title_entities, body_entities);
 
                     articles_pushed++;
                 }

@@ -28,8 +28,8 @@ module.exports = {
             var article = articles_json[i];
             var processed_article = new Object();
 
-            processed_article.title = article.title;
-            processed_article.body = parse_response(article.entities, friends, article.body);
+            processed_article.title = article.title_entities != "" ? parse_response(article.title_entities, friends, article.title) : article.title;
+            processed_article.body = article.body_entities != "" ? parse_response(article.body_entities, friends, article.body) : article.body;
 
             processed_json.push(processed_article);
         }
@@ -39,16 +39,21 @@ module.exports = {
         return processed_json;
     },
 
-    request_api: function(text, callback) {
-        make_request("POST", text, function(response) {
+    request_api: function(title, text, callback) {
+        make_request("POST", title, function(response) {
+            var title_entities = "";
             if (JSON.parse(response)["response"] != undefined) {
-                callback(JSON.parse(response)["response"]["entities"]);
-            } else {
-                callback("");
+                title_entities = JSON.parse(response)["response"]["entities"];
             }
+            make_request("POST", text, function(response) {
+                var body_entities = "";
+                if (JSON.parse(response)["response"] != undefined) {
+                    body_entities = JSON.parse(response)["response"]["entities"];
+                }
+                callback(title_entities, body_entities);
+            });
         });
-
-    },
+    }
 
 }
 
@@ -134,7 +139,6 @@ function make_request(method, data, callback) {
         res.on("end", function() {
             // console.log(JSON.parse(response));
             callback(response);
-            return response;
         });
     });
 
