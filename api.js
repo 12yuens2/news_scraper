@@ -8,10 +8,6 @@ var host = "api.textrazor.com";
 var api_key = "88165ec1a0d94288fce4a214888cd695b38a47f0cf2ec24784ec76fe";
 
 
-//placeholder facebook friends
-var friends = ["Sizhe Yuen", "Bhargava Jariwala", "Andrew Spence", "Hakkon Thor Brunstad", "James Moran", "Keno Schwalb", "Patrick Schrempf", "Martynas Noreika", "Bipaswi Man Shakya", "Christmas Egle Valkunaite", "Mohammed Saadat", "Alex Ungurianu"];
-
-
 module.exports = {
     /**
      * Function for server to call API.
@@ -28,8 +24,10 @@ module.exports = {
             var article = articles_json[i];
             var processed_article = new Object();
 
-            processed_article.title = article.title_entities != "" ? parse_response(article.title_entities, friends, article.title) : article.title;
-            processed_article.body = article.body_entities != "" ? parse_response(article.body_entities, friends, article.body) : article.body;
+            console.log(friends);
+            processed_article.person = friends[i];
+            processed_article.title = article.title_entities != undefined ? process_response(article.title_entities, friends, article.title, i) : article.title;
+            processed_article.body = article.body_entities != undefined ? process_response(article.body_entities, friends, article.body, i) : article.body;
 
             processed_json.push(processed_article);
         }
@@ -57,8 +55,63 @@ module.exports = {
 
 }
 
+
+function process_response(entities, friends, text, i) {
+    var main_friend = "";
+    if (i > friends.length) {
+        main_friend = "NOT_ENOUGH_FRIENDS!";
+    } else {
+        main_friend = friends[i];
+    }
+
+    var friend_count = 0;
+    var friend_map = {};
+
+    var people = [];
+
+    //Go through all person entities and find the one with the highest relevance score
+    var main_entity = {"entityId": undefined, "relevanceScore": 0};
+
+    for (var i = 0; i<entities.length; i++) {
+        var entity = entities[i];
+        if (entity.type && entity.type.indexOf("Person") > -1) {
+            people.push(entity);
+            if (entity.relevanceScore > main_entity.relevanceScore) {
+                main_entity.entityId = entity.entityId;
+                main_entity.relevanceScore = entity.relevanceScore;
+            }
+        }
+    }
+
+    //Put main friend as person with highest relevance
+    friend_map[main_entity.entityId] = main_friend;
+
+    for (var i = 0; i<people.length; i++) {
+        var person = people[i];
+        var friend = friends[friend_count];
+
+        //if person is already in the friend map
+        if (friend_map[person.entityId]) {
+            friend = friend_map[person.entityId];
+        } else {
+            friend_map[person.entityId] = friend;
+            friend_count++;
+            if (friend_count > friends.length) {
+                friends[friend_count] = "NOT_ENOUGH_FRIENDS";
+            }
+        }
+        text = text.replace(person.matchedText, friend);
+    }
+
+    if (entity.type && entity.type.indexOf("Place") > -1) {
+        text = text.replace(entity.matchedText, "St Andrews");
+    }
+
+    return text;
+}
+
 /**
- * Function that processes the text using information from entities and changes Perons and Places to ones given from Facebook.
+ * Function that processes the text using information from entities and changes Persons and Places to ones given from Facebook.
  * @param entities - entities in JSON format of TextRazor API
  * @param text - Text to be changed passed on the entities
  * @returns {*} - The changed text
