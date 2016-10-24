@@ -29,8 +29,11 @@
     width:100px;
     height:100px;
     margin-right:10px;
-    margin-top: 15px;
-    margin-botton: 10px;
+    margin-bottom: 20px;
+    word-wrap: break-word;
+    /*//margin-top: 15px;*/
+    /*//margin-botton: 10px;*/
+
 }
 
 .frontText {
@@ -39,11 +42,27 @@
 
 .frontButton {
     float: right;
+    margin-right: 3em;
+}
+
+.colText {
+    font-size: 14px;
+    display: inline-block;
+
+
 }
 
 h4 {
     font-weight: bold;
 }
+
+h5 {
+    font-weight: bold;
+    font-size: 0.82vw;
+    margin: 0px;
+    word-wrap: break-word;
+}
+
 
 .item {
     /*margin-left: 4em;*/
@@ -51,7 +70,7 @@ h4 {
 
 .carousel {
     height: 200px;
-    margin-top: 15vh;
+    margin-top: 10vh;
 }
 
 .carousel-control.left, .carousel-control.right {
@@ -62,7 +81,7 @@ h4 {
 
 .carousel-control.left {
     position: absolute;
-    top: -30%; /* pushes the icon in the middle of the height */
+    top: -30%;
     left: -10%;
     z-index: 5;
     display: inline-block;
@@ -70,7 +89,7 @@ h4 {
 
 .carousel-control.right {
     position: absolute;
-    top: -30%; /* pushes the icon in the middle of the height */
+    top: -30%;
     right: -10%;
     z-index: 5;
     display: inline-block;
@@ -78,9 +97,47 @@ h4 {
 
 .carousel-control {
     position: absolute;
-    top: -30%; /* pushes the icon in the middle of the height */
+    top: -30%;
     z-index: 5;
     display: inline-block;
+}
+
+
+
+.row {
+    margin-bottom: 2em;
+}
+
+a , a:hover {
+    text-decoration:none;
+    font-weight:normal;
+
+}
+
+.box:hover {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.7);
+    transition: box-shadow 0.1s ease-in-out;
+}
+
+.box {
+    padding: 7px;
+}
+
+#article-title {
+
+}
+
+#article-text {
+
+}
+
+.modal-title {
+    text-align: center;
+}
+
+#logo {
+    margin-left: -12em;
+    margin-top: 0.5em;
 }
 
 
