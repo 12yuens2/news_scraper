@@ -28,16 +28,16 @@ socket.on('response', function(res){
 
         if (col.id === "col1") {
             col.innerHTML =
-                '<img src="' + fbData[0]['picture'].data.url + '" alt="Article picture" style="width:10em;height:10em;">' +
-                "<h4><b>" + res[i - 1].title + "</b></h4>" +
-                "<p>" + getIntro(res[i - 1].body) + "</p>" +
-                "<p><a class='btn btn-default' onclick='updateArticle(" + i + ")' data-toggle='modal' data-target='#modal' role='button'>Read Article &raquo;</a></p>";
+                '<img src="' + fbData[0]['picture'].data.url + '" alt="Article picture" class="frontImg">' +
+                "<h4>" + res[i - 1].title + "</h4>" +
+                "<div class='frontText'>" + getIntro(res[i - 1].body) + "</div>" +
+		        "<a class='btn btn-default frontButton' onclick='updateArticle(" + i + ")' data-toggle='modal' data-target='#modal' role='button'>Read Article &raquo;</a>";
 
         }
 
         else
             col.innerHTML =
-                "<h4><b>" + res[i - 1].title + "</b></h4>" +
+                "<h4>" + res[i - 1].title + "</h4>" +
                 "<p>" + getIntro(res[i - 1].body) + "</p>" +
                 "<p><a class='btn btn-default' onclick='updateArticle(" + i + ")' data-toggle='modal' data-target='#modal' role='button'>Read Article &raquo;</a></p>";
 

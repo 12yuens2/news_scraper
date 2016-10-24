@@ -24,3 +24,63 @@
     max-width: 100%;
 }
 
+.frontImg {
+    float:left;
+    width:100px;
+    height:100px;
+    margin-right:10px;
+    margin-top: 15px;
+    margin-botton: 10px;
+}
+
+.frontText {
+    font-size: 15px;
+}
+
+.frontButton {
+    float: right;
+}
+
+h4 {
+    font-weight: bold;
+}
+
+.item {
+    /*margin-left: 4em;*/
+}
+
+.carousel {
+    height: 200px;
+    margin-top: 15vh;
+}
+
+.carousel-control.left, .carousel-control.right {
+    background-image:none !important;
+    filter:none !important;
+
+}
+
+.carousel-control.left {
+    position: absolute;
+    top: -30%; /* pushes the icon in the middle of the height */
+    left: -10%;
+    z-index: 5;
+    display: inline-block;
+}
+
+.carousel-control.right {
+    position: absolute;
+    top: -30%; /* pushes the icon in the middle of the height */
+    right: -10%;
+    z-index: 5;
+    display: inline-block;
+}
+
+.carousel-control {
+    position: absolute;
+    top: -30%; /* pushes the icon in the middle of the height */
+    z-index: 5;
+    display: inline-block;
+}
+
+
