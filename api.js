@@ -82,7 +82,7 @@ function parse_response(entities, friends, text) {
             }
 
             if (entity["type"].indexOf("Place") > -1) {
-                text = text.replace(entity["matchedText"], "St. AAAAndrews")
+                text = text.replace(entity["matchedText"], "St Andrews")
             }
         }
     }

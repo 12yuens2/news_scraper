@@ -14,7 +14,7 @@ function logIn() {
         } else {
             console.log('User cancelled login or did not fully authorize.');
         }
-    }, {scope:'email,  user_friends, user_photos'}); //ask user to access their details
+    }, {scope:'email,  user_friends, user_photos'}); // ask user to access their details
 }
 
 //add all friends to friends array
