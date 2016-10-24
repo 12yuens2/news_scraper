@@ -30,8 +30,8 @@ socket.on('response', function(res){
             col.innerHTML =
                 '<img src="' + fbData[0]['picture'].data.url + '" alt="Article picture" class="frontImg">' +
                 "<h4>" + res[i - 1].title + "</h4>" +
-                "<p class='frontText'>" + getIntro(res[i - 1].body) + "</p>" +
-                "<p><a class='btn btn-default' onclick='updateArticle(" + i + ")' data-toggle='modal' data-target='#modal' role='button'>Read Article &raquo;</a></p>";
+                "<div class='frontText'>" + getIntro(res[i - 1].body) + "</div>" +
+		        "<a class='btn btn-default frontButton' onclick='updateArticle(" + i + ")' data-toggle='modal' data-target='#modal' role='button'>Read Article &raquo;</a>";
 
         }
 

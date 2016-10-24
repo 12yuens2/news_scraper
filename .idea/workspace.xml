@@ -3,10 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="2abfb7c9-7beb-4542-8843-828fae0f65fe" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api.js" afterPath="$PROJECT_DIR$/api.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/articles.json" afterPath="$PROJECT_DIR$/articles.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/css/genStyle.css" afterPath="$PROJECT_DIR$/assets/css/genStyle.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/facebook.js" afterPath="$PROJECT_DIR$/assets/facebook.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/gen.html" afterPath="$PROJECT_DIR$/assets/gen.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/generate.js" afterPath="$PROJECT_DIR$/assets/generate.js" />
     </list>
     <ignored path="NewsScraper.iws" />
@@ -31,30 +29,30 @@
       <file leaf-file-name="articles.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/articles.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
+            <state relative-caret-position="2772">
               <caret line="0" column="546641" selection-start-line="0" selection-start-column="546641" selection-end-line="0" selection-end-column="546641" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="generate.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="generate.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assets/generate.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="468">
-              <caret line="32" column="31" selection-start-line="32" selection-start-column="31" selection-end-line="32" selection-end-column="31" />
+            <state relative-caret-position="490">
+              <caret line="43" column="75" selection-start-line="43" selection-start-column="75" selection-end-line="43" selection-end-column="75" />
               <folding>
-                <marker date="1477312636149" expanded="true" signature="847:850" ph="..." />
+                <marker date="1477319558174" expanded="true" signature="847:850" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="genStyle.css" pinned="false" current-in-tab="false">
+      <file leaf-file-name="genStyle.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/assets/css/genStyle.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="607">
-              <caret line="36" column="10" selection-start-line="36" selection-start-column="10" selection-end-line="36" selection-end-column="10" />
+            <state relative-caret-position="175">
+              <caret line="53" column="18" selection-start-line="53" selection-start-column="18" selection-end-line="53" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -73,8 +71,8 @@
       <file leaf-file-name="gen.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assets/gen.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="702">
-              <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+            <state relative-caret-position="162">
+              <caret line="66" column="37" selection-start-line="66" selection-start-column="37" selection-end-line="66" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -140,11 +138,11 @@
         <option value="$PROJECT_DIR$/facebook.js" />
         <option value="$PROJECT_DIR$/assets/index.html" />
         <option value="$PROJECT_DIR$/articles.json" />
-        <option value="$PROJECT_DIR$/assets/gen.html" />
         <option value="$PROJECT_DIR$/server.js" />
         <option value="$PROJECT_DIR$/api.js" />
         <option value="$PROJECT_DIR$/assets/facebook.js" />
         <option value="$PROJECT_DIR$/assets/generate.js" />
+        <option value="$PROJECT_DIR$/assets/gen.html" />
         <option value="$PROJECT_DIR$/assets/css/genStyle.css" />
       </list>
     </option>
@@ -291,7 +289,7 @@
       <workItem from="1477230511579" duration="24634000" />
       <workItem from="1477258660880" duration="391000" />
       <workItem from="1477308321701" duration="19000" />
-      <workItem from="1477308358921" duration="5258000" />
+      <workItem from="1477308358921" duration="10557000" />
     </task>
     <task id="LOCAL-00001" summary="Initial setup.">
       <created>1476458759346</created>
@@ -419,11 +417,18 @@
       <option name="project" value="LOCAL" />
       <updated>1477258992842</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Improving CSS.">
+      <created>1477313670929</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1477313670929</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="109421000" />
+    <option name="totallyTimeSpent" value="114720000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -498,10 +503,10 @@
     <MESSAGE value="Facebook data is now being sent to back end and can be used to generate the articles." />
     <MESSAGE value="Working on display of the articles." />
     <MESSAGE value="Trying to implement pictures in the gen page." />
-    <MESSAGE value="Improving CSS." />
     <MESSAGE value="Still working on stuff." />
     <MESSAGE value="Fixed shitloads of bugs." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed shitloads of bugs." />
+    <MESSAGE value="Improving CSS." />
+    <option name="LAST_COMMIT_MESSAGE" value="Improving CSS." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -612,18 +617,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/articles.json">
+    <entry file="file://$PROJECT_DIR$/assets/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="546641" selection-start-line="0" selection-start-column="546641" selection-end-line="0" selection-end-column="546641" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="652">
-          <caret line="141" column="14" selection-start-line="141" selection-start-column="14" selection-end-line="141" selection-end-column="14" />
+        <state relative-caret-position="1188">
+          <caret line="66" column="0" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -636,19 +633,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/index.html">
+    <entry file="file://$PROJECT_DIR$/api.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1188">
-          <caret line="66" column="0" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
+        <state relative-caret-position="652">
+          <caret line="141" column="14" selection-start-line="141" selection-start-column="14" selection-end-line="141" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/gen.html">
+    <entry file="file://$PROJECT_DIR$/articles.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="702">
-          <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+        <state relative-caret-position="2772">
+          <caret line="0" column="546641" selection-start-line="0" selection-start-column="546641" selection-end-line="0" selection-end-column="546641" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/generate.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="490">
+          <caret line="43" column="75" selection-start-line="43" selection-start-column="75" selection-end-line="43" selection-end-column="75" />
+          <folding>
+            <marker date="1477319558174" expanded="true" signature="847:850" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -660,21 +667,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/css/genStyle.css">
+    <entry file="file://$PROJECT_DIR$/assets/gen.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="607">
-          <caret line="36" column="10" selection-start-line="36" selection-start-column="10" selection-end-line="36" selection-end-column="10" />
+        <state relative-caret-position="162">
+          <caret line="66" column="37" selection-start-line="66" selection-start-column="37" selection-end-line="66" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/generate.js">
+    <entry file="file://$PROJECT_DIR$/assets/css/genStyle.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="32" column="31" selection-start-line="32" selection-start-column="31" selection-end-line="32" selection-end-column="31" />
-          <folding>
-            <marker date="1477312636149" expanded="true" signature="847:850" ph="..." />
-          </folding>
+        <state relative-caret-position="175">
+          <caret line="53" column="18" selection-start-line="53" selection-start-column="18" selection-end-line="53" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>
