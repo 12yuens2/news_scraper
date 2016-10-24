@@ -28,8 +28,8 @@ module.exports = {
             var article = articles_json[i];
             var processed_article = new Object();
 
-            processed_article.title = article.title_entities != "" ? parse_response(article.title_entities, friends, article.title) : article.title;
-            processed_article.body = article.body_entities != "" ? parse_response(article.body_entities, friends, article.body) : article.body;
+            processed_article.title = (article.title_entities != "" ? parse_response(article.title_entities, friends, article.title) : article.title);
+            processed_article.body = (article.body_entities != "" ? parse_response(article.body_entities, friends, article.body) : article.body);
 
             processed_json.push(processed_article);
         }

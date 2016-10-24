@@ -63,7 +63,11 @@ function get_text_from_p(page, p_class) {
 					}
 				}
 			}
+
+
 		}
+
+		text += "\n";
 	});
 	return text;
 }
@@ -154,8 +158,8 @@ function get_articles(init_url, base_url, a_class, t_class, p_class, callback) {
 function write_to_json(article, title_entities, body_entities) {
 	var articles_json = JSON.parse(fs.readFileSync(article_file));
 
-	article.title_entities = title_entities;
-	article.body_entities = body_entities
+	article.title_entities = (title_entities != undefined ? title_entities : new Array());
+	article.body_entities = body_entities;
 	articles_json.push(article);
 
 	articles_json = JSON.stringify(articles_json);
