@@ -1,3 +1,7 @@
+/**
+ * The following two snippets of code load and initialise
+ * Facebook SDK.
+ */
 window.fbAsyncInit = function() {
   FB.init({
     appId      : '663533450471602',
