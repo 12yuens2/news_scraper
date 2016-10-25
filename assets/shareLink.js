@@ -1,5 +1,8 @@
 var Client = require('mariasql');
 
+/**
+ * Sets client with th efollowing parameters.
+ */
 var c = new Client({
   host: 'localhost',
   user: 'vn5',
@@ -7,12 +10,11 @@ var c = new Client({
   db: 'vn5_se'
 });
 
-print();
+//print();
+//addHtmlToPages();
+//getHtmlFromPages(1648288212);
+//print();
 
-addHtmlToPages();
-getHtmlFromPages(1648288212);
-
-print();
 
 function print(){
   c.query('SHOW TABLES', function(err, rows) {
@@ -22,6 +24,10 @@ function print(){
   });
 }
 
+/**
+ * Adds a record to the database where k is a hash and v is a string
+ * representation of the html document.
+ */
 function addHtmlToPages(){
   var hash = getHash(getHtmlContent());
   var q = 'INSERT INTO pages (k, v) VALUES (' + hash + ' , "' + getHtmlContent() + '" )';
