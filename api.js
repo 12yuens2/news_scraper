@@ -7,14 +7,22 @@ var fs = require("fs");
 var host = "api.textrazor.com";
 var api_key = "88165ec1a0d94288fce4a214888cd695b38a47f0cf2ec24784ec76fe";
 
-
+//Exports for server.js
 module.exports = {
+
     /**
-     * Function for server to call API.
-     * @param text - Text to be processed by the API
-     * @param callback - Function that is called after API is returned and text is processed. Parameter of callback is the changed text.
+     * Function that changes the articles from 'articles.json' based on Facebook friends.
+     * Returns an array of article objects in the form {"person":"", "title":"", "body":""}
+     * - "person" is a url taken from 'fb_friends' that links to a person's profile picture.
+     *   This field can be empty if list of 'fb_friends' has been exhausted while the list of articles has not been exhausted
+     * - "title" is the changed title text of the article
+     * - "body" is the changed body text of the article
+     * Each article tries to focus on one friend if possible.
+     * @param fb_friends - Text to be processed by the API
+     * @returns {Array} -  an array of article objects in the form described above
      */
     change_text: function (fb_friends) {
+        //Get friends in {"name": "", "img": ""} format from Facebook's objects
         var friends = get_friends(JSON.parse(fb_friends));
 
         var articles_json = JSON.parse(fs.readFileSync("articles.json"))
@@ -24,11 +32,18 @@ module.exports = {
             var article = articles_json[i];
             var processed_article = new Object();
 
+            //Add the friend's profile picture to the object
             if (friends[i] != undefined) {
                 processed_article.person = friends[i].img;
             }
+
+            /*
+             * Add the changed text of the article's title and body text
+             * If the API returned no entities, then add the text unchanged
+             */
             processed_article.title = article.title_entities != undefined ? process_response(article.title_entities, friends, article.title, i) : article.title;
             processed_article.body = article.body_entities != undefined ? process_response(article.body_entities, friends, article.body, i) : article.body;
+
             processed_json.push(processed_article);
         }
 
@@ -40,13 +55,21 @@ module.exports = {
         return processed_json;
     },
 
+    /**
+     * Makes two calls to TextRazor API, one for 'title' and one for 'text'.
+     * Two responses are returned in the callback which are the entities in JSON format
+     * Do not call often as
+     * @param title - the title text of the article to be analysed
+     * @param text - the body text of the article to be analysed
+     * @param callback - the response entities for the title and body are passed to the callback after the API returns its response
+     */
     request_api: function(title, text, callback) {
-        make_request("POST", title, function(response) {
+        make_request(title, function(response) {
             var title_entities = "";
             if (JSON.parse(response)["response"] != undefined) {
                 title_entities = JSON.parse(response)["response"]["entities"];
             }
-            make_request("POST", text, function(response) {
+            make_request(text, function(response) {
                 var body_entities = "";
                 if (JSON.parse(response)["response"] != undefined) {
                     body_entities = JSON.parse(response)["response"]["entities"];
@@ -58,7 +81,15 @@ module.exports = {
 
 }
 
-
+/**
+ * Function that processes the text using information from entities, changing Persons and Places.
+ * Tries to focus the text returned on a specific person, namely friends[i].
+ * @param entities - the TextRazor entities of the 'text'
+ * @param friends - a list of friends that can be used to change the text
+ * @param text - the text to be changed
+ * @param i - the index for 'friends'
+ * @returns {*} - the changed text
+ */
 function process_response(entities, friends, text, i) {
     var main_friend = "";
     if (friends[i] === undefined) {
@@ -71,7 +102,6 @@ function process_response(entities, friends, text, i) {
     var friend_map = {};
 
     var people = [];
-
 
     var main_entity = {"entityId": undefined, "relevanceScore": -1};
 
@@ -105,7 +135,6 @@ function process_response(entities, friends, text, i) {
             friend = "Tim";
         }
 
-
         //if person is already in the friend map
         if (friend_map[person.entityId]) {
             friend = friend_map[person.entityId];
@@ -123,44 +152,12 @@ function process_response(entities, friends, text, i) {
 }
 
 /**
- * Function that processes the text using information from entities and changes Persons and Places to ones given from Facebook.
- * @param entities - entities in JSON format of TextRazor API
- * @param text - Text to be changed passed on the entities
- * @returns {*} - The changed text
+ * Return an array of friend objects with attributes 'name' and 'img'
+ * 'name' is the full name of the friend (first name and last name)
+ * 'img' is a link to their Facebook profile picture taken from 'fb_friends'
+ * @param fb_friends - array of JSON objects which represent each Facebook friend, its fields are specified in facebook.js
+ * @returns {Array.<*>} - a randomised array of friends with their name and link to profile image
  */
-function parse_response(entities, friends, text) {
-    var friend_map = [];
-    var friend_count = 0;
-
-    for (var i = 0; i<entities.length; i++) {
-        var entity = entities[i];
-        if (entity["type"]) {
-            if (entity["type"].indexOf("Person") > -1) {
-                var friend = friends[friend_count].name;
-
-                if (friend_map[entity["entityId"]]) {
-                    console.log("use same friends for " + entity["entityId"] + " : " + friend_map[entity["entityId"]]);
-                    friend = friend_map[entity["entityId"]];
-                } else {
-                    friend_map[entity["entityId"]] = friend;
-                    friend_count++;
-                    if (friend_count > friends.length) {
-                        friends[friend_count] = "NOT_ENOUGH_FRIENDS";
-                    }
-                }
-                text = text.replace(entity["matchedText"], friend);
-            }
-
-            if (entity["type"].indexOf("Place") > -1) {
-                text = text.replace(entity["matchedText"], "St Andrews")
-            }
-        }
-    }
-
-    return text;
-}
-
-
 function get_friends(fb_friends) {
     var friends = [];
     for (var i = 0; i<fb_friends.length; i++) {
@@ -174,13 +171,21 @@ function get_friends(fb_friends) {
     });
 }
 
-function make_request(method, data, callback) {
+/**
+ * Makes a HTTPS POST request to the TextRazor API.
+ * The response is passed as a parameter to the callback.
+ * @param data - the data for the API to process
+ * @param callback - the callback function with the API response as its parameter
+ */
+function make_request(data, callback) {
 
+    //Data of request, as specified by TextRazor's API
     var post_data = querystring.stringify({
         "extractors" : "entities",
         "text" : data
     });
 
+    //Header of request
     var headers = {
         "Content-Type" : "application/x-www-form-urlencoded",
         "Content-Length" : Buffer.byteLength(post_data),
@@ -189,7 +194,7 @@ function make_request(method, data, callback) {
 
     var options = {
         host: host,
-        method: method,
+        method: "POST",
         headers: headers
     };
 
@@ -200,11 +205,9 @@ function make_request(method, data, callback) {
 
         res.on("data", function(data) {
             response += data;
-            // console.log(data);
         });
 
         res.on("end", function() {
-            // console.log(JSON.parse(response));
             callback(response);
         });
     });
