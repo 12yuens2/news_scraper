@@ -57,8 +57,8 @@
 }
 
 #troll {
-    width: 304px;
-    height: 310px;
+    width: 250px;
+    height: 250px;
 }
 
 .text{
@@ -75,5 +75,12 @@
 and (min-width : 1824px) {
     .modal-dialog  {
         width:23vw;
+    }
+}
+
+@media only screen
+and (max-width : 600px) {
+    .modal-dialog  {
+        width:100%;
     }
 }
