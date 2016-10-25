@@ -24,11 +24,11 @@ module.exports = {
             var article = articles_json[i];
             var processed_article = new Object();
 
-            console.log(friends);
+
             processed_article.person = friends[i];
             processed_article.title = article.title_entities != undefined ? process_response(article.title_entities, friends, article.title, i) : article.title;
             processed_article.body = article.body_entities != undefined ? process_response(article.body_entities, friends, article.body, i) : article.body;
-
+            console.log(JSON.stringify(processed_article) + "\n\n\n");
             processed_json.push(processed_article);
         }
         processed_json.sort(function() {
@@ -70,7 +70,7 @@ function process_response(entities, friends, text, i) {
     var people = [];
 
     //Go through all person entities and find the one with the highest relevance score
-    var main_entity = {"entityId": undefined, "relevanceScore": 0};
+    var main_entity = {"entityId": undefined, "relevanceScore": -1};
 
     for (var i = 0; i<entities.length; i++) {
         var entity = entities[i];
@@ -81,11 +81,19 @@ function process_response(entities, friends, text, i) {
                 main_entity.relevanceScore = entity.relevanceScore;
             }
         }
+        if (entity.type && entity.type.indexOf("Place") > -1) {
+            text = text.replace(entity.matchedText, "St Andrews");
+        }
     }
 
-    //Put main friend as person with highest relevance
-    friend_map[main_entity.entityId] = main_friend;
+    // console.log(main_entity.entityId);
 
+    //Put main friend as person with highest relevance
+    if (main_entity.entityId != undefined) {
+        friend_map[main_entity.entityId] = main_friend;
+    }
+
+    //Replace people names with friends' names
     for (var i = 0; i<people.length; i++) {
         var person = people[i];
         var friend = friends[friend_count];
@@ -101,10 +109,6 @@ function process_response(entities, friends, text, i) {
             }
         }
         text = text.replace(person.matchedText, friend);
-    }
-
-    if (entity.type && entity.type.indexOf("Place") > -1) {
-        text = text.replace(entity.matchedText, "St Andrews");
     }
 
     return text;
