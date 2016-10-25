@@ -102,6 +102,7 @@ function process_response(entities, friends, text, i) {
     var friend_map = {};
 
     var people = [];
+    var places = [];
 
     var main_entity = {"entityId": undefined, "relevanceScore": -1};
 
@@ -116,7 +117,7 @@ function process_response(entities, friends, text, i) {
             }
         }
         if (entity.type && entity.type.indexOf("Place") > -1) {
-            text = text.replace(entity.matchedText, "St Andrews");
+           places.push(entity);
         }
     }
 
@@ -129,7 +130,7 @@ function process_response(entities, friends, text, i) {
     for (var i = 0; i<people.length; i++) {
         var person = people[i];
         var friend = "";
-        if (friends[friend_count != undefined]) {
+        if (friends[friend_count] != undefined) {
             friend = friends[friend_count].name;
         } else {
             friend = "Tim";
@@ -146,6 +147,29 @@ function process_response(entities, friends, text, i) {
             }
         }
         text = text.replace(person.matchedText, friend);
+    }
+
+
+    var locations = ["St Andrews", "Edinburgh", "Dundee", "North Haugh", "The Scores"];
+    var location_map = {};
+    var location_count = 0;
+    var location = "";
+    for (var i = 0; i<places.length; i++) {
+        var place = places[i];
+
+        if(locations[location_count] == undefined) {
+            location_count = 0;
+        }
+        location = locations[location_count];
+
+        if (location_map[place.entityId]) {
+            location = location_map[place.entityId];
+        } else {
+            location_map[place.entityId] = location;
+            location_count++;
+        }
+        text = text.replace(place.matchedText, location);
+
     }
 
     return text;
