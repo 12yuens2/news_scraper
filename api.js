@@ -24,16 +24,19 @@ module.exports = {
             var article = articles_json[i];
             var processed_article = new Object();
 
-
-            processed_article.person = friends[i];
+            if (friends[i] != undefined) {
+                processed_article.person = friends[i].img;
+            }
             processed_article.title = article.title_entities != undefined ? process_response(article.title_entities, friends, article.title, i) : article.title;
             processed_article.body = article.body_entities != undefined ? process_response(article.body_entities, friends, article.body, i) : article.body;
-            console.log(JSON.stringify(processed_article) + "\n\n\n");
             processed_json.push(processed_article);
         }
+
+        //Randomise articles sent
         processed_json.sort(function() {
             return 0.5 - Math.random();
         });
+
         return processed_json;
     },
 
@@ -58,10 +61,10 @@ module.exports = {
 
 function process_response(entities, friends, text, i) {
     var main_friend = "";
-    if (i > friends.length) {
-        main_friend = "NOT_ENOUGH_FRIENDS!";
+    if (friends[i] === undefined) {
+        main_friend = "Tim";
     } else {
-        main_friend = friends[i];
+        main_friend = friends[i].name;
     }
 
     var friend_count = 0;
@@ -69,9 +72,10 @@ function process_response(entities, friends, text, i) {
 
     var people = [];
 
-    //Go through all person entities and find the one with the highest relevance score
+
     var main_entity = {"entityId": undefined, "relevanceScore": -1};
 
+    //Go through all person entities and find the one with the highest relevance score
     for (var i = 0; i<entities.length; i++) {
         var entity = entities[i];
         if (entity.type && entity.type.indexOf("Person") > -1) {
@@ -86,8 +90,6 @@ function process_response(entities, friends, text, i) {
         }
     }
 
-    // console.log(main_entity.entityId);
-
     //Put main friend as person with highest relevance
     if (main_entity.entityId != undefined) {
         friend_map[main_entity.entityId] = main_friend;
@@ -96,7 +98,13 @@ function process_response(entities, friends, text, i) {
     //Replace people names with friends' names
     for (var i = 0; i<people.length; i++) {
         var person = people[i];
-        var friend = friends[friend_count];
+        var friend = "";
+        if (friends[friend_count != undefined]) {
+            friend = friends[friend_count].name;
+        } else {
+            friend = "Tim";
+        }
+
 
         //if person is already in the friend map
         if (friend_map[person.entityId]) {
@@ -105,7 +113,7 @@ function process_response(entities, friends, text, i) {
             friend_map[person.entityId] = friend;
             friend_count++;
             if (friend_count > friends.length) {
-                friends[friend_count] = "NOT_ENOUGH_FRIENDS";
+                friends[friend_count] = "Tim";
             }
         }
         text = text.replace(person.matchedText, friend);
@@ -128,7 +136,7 @@ function parse_response(entities, friends, text) {
         var entity = entities[i];
         if (entity["type"]) {
             if (entity["type"].indexOf("Person") > -1) {
-                var friend = friends[friend_count];
+                var friend = friends[friend_count].name;
 
                 if (friend_map[entity["entityId"]]) {
                     console.log("use same friends for " + entity["entityId"] + " : " + friend_map[entity["entityId"]]);
@@ -157,8 +165,10 @@ function get_friends(fb_friends) {
     var friends = [];
     for (var i = 0; i<fb_friends.length; i++) {
         var friend = fb_friends[i];
-        friends.push(friend.first_name + " " + friend.last_name);
+        friends.push({"name": friend.first_name + " " + friend.last_name, "img": friend["picture"]["data"].url});
     }
+
+    //Randomise friends list
     return friends.sort(function() {
         return 0.5 - Math.random();
     });
