@@ -10,10 +10,20 @@
 }
 
 .shareLink {
-    width: 7vw;
-    height: 30px;
+    width: 110px;
+    height: 27px;
     margin-top: 0;
-    margin-left: 7px;
+    margin-bottom: 3px;
+    padding-top: 3px;
+    position: relative;
+    left: -1vw;
+}
+
+.modal-content {
+    background-color: #ececec;
+    border: 1px solid #bdc3c7;
+    border-radius: 0px;
+    outline: 0;
 }
 
 .navbar-brand {
@@ -31,9 +41,16 @@
     margin-right:10px;
     margin-bottom: 20px;
     word-wrap: break-word;
-    /*//margin-top: 15px;*/
-    /*//margin-botton: 10px;*/
 
+}
+
+#article-image {
+    float:left;
+    width:100px;
+    height:100px;
+    margin-right:15px;
+    margin-bottom: 5px;
+    word-wrap: break-word;
 }
 
 .frontText {
@@ -58,15 +75,26 @@ h4 {
 
 h5 {
     font-weight: bold;
-    font-size: 0.82vw;
+    font-size: 16px;
     margin: 0px;
     word-wrap: break-word;
 }
 
+@media only screen
+and (max-width : 1400px) {
+    h5 {
+    	font-weight: bold;
+   	    font-size: 16px;
+    	margin: 0px;
+        word-wrap: break-word;
+    }
 
-.item {
-    /*margin-left: 4em;*/
+    .shareLink {
+        left: 1vw;
+    }
+
 }
+
 
 .carousel {
     height: 200px;
@@ -136,8 +164,32 @@ a , a:hover {
 }
 
 #logo {
-    margin-left: -12em;
-    margin-top: 0.5em;
+    float: left;
+    margin-top: 0.2em;
+
 }
+
+.brand {
+    margin-top: 0.5em;
+    margin-right: 1em;
+
+}
+
+.navbar-brand{
+    padding-left: 2em;
+    margin-bottom: 0;
+    margin-right: 1em;
+}
+
+iframe {
+    padding-top: 8px !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    margin: 0 !important;
+    border: 0;
+
+
+}
+
 
 

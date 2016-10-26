@@ -8,7 +8,7 @@
 }
 
 .vertical-center {
-  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100%;
   min-height: 97vh;
 
 
@@ -57,8 +57,10 @@
 }
 
 #troll {
-    width: 304px;
-    height: 310px;
+    width: 250px;
+    height: 250px;
+    padding-top: 15px;
+    padding-left: 20px;
 }
 
 .text{
@@ -66,14 +68,16 @@
     font-size: 16px;
 }
 
-.login {
-
-
-}
-
 @media only screen
 and (min-width : 1824px) {
     .modal-dialog  {
         width:23vw;
+    }
+}
+
+@media only screen
+and (max-width : 600px) {
+    .modal-dialog  {
+        width:100%;
     }
 }

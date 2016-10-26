@@ -13,16 +13,30 @@
 
         <link rel="icon" type="image/png" href="pictures/news.png">
 
-        <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-
-        <script src="fbSDK.js"></script>
-
-
     </head>
 
     <body>
+    <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '663533450471602',
+                channelUrl : 'https://mn55.host.cs.st-andrews.ac.uk',
+                xfbml      : true,
+                version    : 'v2.8'
+            });
+        };
 
-        <!-- Modal | Article -->
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+
+    <!-- Modal | Article -->
         <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -34,9 +48,7 @@
                         <h4 class="modal-title" id="article-title"></h4>
                     </div>
 
-                    <div class="modal-body">
-                        <!--<a href="https://thecatapi.com"><img src="https://thecatapi.com/api/images/get?format=src&type=gif"></a>-->
-                        <p id="article-text"></p>
+                    <div class="modal-body" id="modalBody">
                     </div>
                 </div>
             </div>
@@ -45,22 +57,25 @@
 
         <nav class="navbar navbar-fixed-top navbar-inverse">
             <div class="container">
-                <div class="navbar-header">
-                    <img id="logo" src="http://www.iconsdb.com/icons/preview/white/globe-2-xxl.png" height="42" width="42">
-                    <a class="navbar-brand" href="#">World news</a>
+                <div class="brand">
+                    <img id="logo" src="http://www.iconsdb.com/icons/preview/white/globe-2-xxl.png" height="40" width="40">
+                    <p class="navbar-brand">World news</p>
                 </div>
 
-                <iframe class="btn shareFb shareFacebook"
-                  src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fmn55.host.cs.st-andrews.ac.uk%2Fnews%2F&layout=button_count&size=large&mobile_iframe=true&appId=663533450471602&width=85&height=28">
-                </iframe>
+                <div class="brand">
+                    <iframe class="btn shareFb shareFacebook"
+                      src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fmn55.host.cs.st-andrews.ac.uk%2Fnews%2F&layout=button_count&size=large&mobile_iframe=true&appId=663533450471602&width=85&height=28">
+                    </iframe>
 
-                <a href = "#" onclick = "do()" class="btn btn-success shareLink " onclick = "">
-                    Share link
-                </a>
+                    <a href = "#" class="btn btn-success shareLink " onclick = "">
+                        Share link
+                    </a>
+                </div>
 
             </div><!-- /.container -->
         </nav><!-- /.navbar -->
 
+        <!-- Content display -->
         <div class="container">
 
             <div class="row">
@@ -164,6 +179,8 @@
 
         <!-- Latest compiled JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.5.1/socket.io.js"></script>
 
         <script src="generate.js"></script>
 
