@@ -1,3 +1,8 @@
+/**
+ * This script is not fully finished and is not included in the main implementation.
+ */
+
+
 var Client = require('mariasql');
 
 /**
@@ -9,11 +14,6 @@ var c = new Client({
   password: '0!4dt1vE3177X4',
   db: 'vn5_se'
 });
-
-//print();
-//addHtmlToPages();
-//getHtmlFromPages(1648288212);
-//print();
 
 
 function print(){
@@ -41,9 +41,7 @@ function addHtmlToPages(){
   return hash;
 }
 
-function do(){
-  return getUrl(getHash(getHtmlContent()));
-}
+
 
 function getUrl(hash){
   return "https://mn55.host.cs.st-andrews.ac.uk/news/" + hash;
@@ -76,7 +74,6 @@ function getHash(str){
   return hash;
 }
 
-//var markup = document.documentElement.innerHTML;
 function getHtmlContent(){
   var markup = "<!DOCTYPE html><html>" + "inner html" + "</html>";
   console.log(markup);

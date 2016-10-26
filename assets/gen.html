@@ -13,32 +13,30 @@
 
         <link rel="icon" type="image/png" href="pictures/news.png">
 
-
-        <script>
-            window.fbAsyncInit = function() {
-                FB.init({
-                    appId      : '663533450471602',
-                    channelUrl : 'https://mn55.host.cs.st-andrews.ac.uk',
-                    xfbml      : true,
-                    version    : 'v2.8'
-                });
-            };
-
-            (function(d, s, id){
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) {return;}
-                js = d.createElement(s); js.id = id;
-                js.src = "https://connect.facebook.net/en_US/sdk.js";
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-        </script>
-
-
     </head>
 
     <body>
+    <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '663533450471602',
+                channelUrl : 'https://mn55.host.cs.st-andrews.ac.uk',
+                xfbml      : true,
+                version    : 'v2.8'
+            });
+        };
 
-        <!-- Modal | Article -->
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+
+    <!-- Modal | Article -->
         <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -77,6 +75,7 @@
             </div><!-- /.container -->
         </nav><!-- /.navbar -->
 
+        <!-- Content display -->
         <div class="container">
 
             <div class="row">
@@ -184,10 +183,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.5.1/socket.io.js"></script>
 
         <script src="generate.js"></script>
-
-
-
-
 
     </body>
 </html>
