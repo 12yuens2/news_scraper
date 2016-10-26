@@ -1,7 +1,7 @@
 var Client = require('mariasql');
 
 /**
- * Sets client with th efollowing parameters.
+ * Sets client with the following parameters.
  */
 var c = new Client({
   host: 'localhost',
