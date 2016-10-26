@@ -29,7 +29,7 @@ io.sockets.on('connection', function (socket) {
 
 //Other constants
 var article_file = "articles.json";
-var articles_per_site = 6;
+var articles_per_site = 10;
 
 
 /**
@@ -155,9 +155,17 @@ function get_articles(init_url, base_url, a_class, t_class, p_class, callback) {
 	});
 }
 
+/**
+ * Writes the given 'article' to the existing JSON file
+ * Each article object is in the form {"title: "", "title_entities": "", "body": "", "body_entities": ""}
+ * @param article - article to be written, contains title and body
+ * @param title_entities - entities of the title of the article given from the API
+ * @param body_entities - entities of the body of the article given from the API
+ */
 function write_to_json(article, title_entities, body_entities) {
 	var articles_json = JSON.parse(fs.readFileSync(article_file));
 
+	//Append title and body entities to the article
 	article.title_entities = (title_entities != undefined ? title_entities : new Array());
 	article.body_entities = body_entities;
 	articles_json.push(article);
@@ -184,9 +192,20 @@ function write_to_file(articles) {
 		if (title != "" && body != "") {
 			nlp.request_api(title, body, function(title_entities, body_entities) {
                 if (body_entities != "" && articles[i].title != "") {
-                	write_to_json(articles[i], title_entities, body_entities);
 
-                    articles_pushed++;
+                	//Always make sure there is a person in the article
+                	var has_person = false;
+                	for (var i = 0; i<body_entities[i]; i++) {
+                		if (body_entities[i].type.indexOf("Person") > -1) {
+							has_person = true;
+							break;
+						}
+					}
+
+					if (has_person) {
+						write_to_json(articles[i], title_entities, body_entities);
+						articles_pushed++;
+					}
                 }
 
                 //Not out of articles && not enough articles per site
@@ -214,7 +233,6 @@ function write_to_file(articles) {
 
 /**
  * Truncates the article_file and fetches new articles to populate the file.
- * @param callback function, the first parameter of the callback is the json array of articles from each site.
  */
 function get_new_articles() {
 	var sleep_time = 5000;

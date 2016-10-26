@@ -22,10 +22,15 @@ module.exports = {
      * @returns {Array} -  an array of article objects in the form described above
      */
     change_text: function (fb_friends) {
+        var articles_json = JSON.parse(fs.readFileSync("articles.json"));
+
+        if (fb_friends === null) {
+            return articles_json;
+        }
+
         //Get friends in {"name": "", "img": ""} format from Facebook's objects
         var friends = get_friends(JSON.parse(fb_friends));
 
-        var articles_json = JSON.parse(fs.readFileSync("articles.json"))
         var processed_json = [];
 
         for (var i = 0; i < articles_json.length; i++) {
@@ -58,7 +63,7 @@ module.exports = {
     /**
      * Makes two calls to TextRazor API, one for 'title' and one for 'text'.
      * Two responses are returned in the callback which are the entities in JSON format
-     * Do not call often as
+     * Do not call often as we are running the free version of the API which only allows 2 concurrent requests
      * @param title - the title text of the article to be analysed
      * @param text - the body text of the article to be analysed
      * @param callback - the response entities for the title and body are passed to the callback after the API returns its response
@@ -69,6 +74,7 @@ module.exports = {
             if (JSON.parse(response)["response"] != undefined) {
                 title_entities = JSON.parse(response)["response"]["entities"];
             }
+            //Makes second request after the first has finished
             make_request(text, function(response) {
                 var body_entities = "";
                 if (JSON.parse(response)["response"] != undefined) {
@@ -92,16 +98,18 @@ module.exports = {
  */
 function process_response(entities, friends, text, i) {
     var main_friend = "";
+
+    //Fix for if user does not have many friends
     if (friends[i] === undefined) {
         main_friend = "Tim";
     } else {
         main_friend = friends[i].name;
     }
 
-    var friend_count = 0;
     var friend_map = {};
 
     var people = [];
+    var places = [];
 
     var main_entity = {"entityId": undefined, "relevanceScore": -1};
 
@@ -116,7 +124,7 @@ function process_response(entities, friends, text, i) {
             }
         }
         if (entity.type && entity.type.indexOf("Place") > -1) {
-            text = text.replace(entity.matchedText, "St Andrews");
+           places.push(entity);
         }
     }
 
@@ -126,33 +134,56 @@ function process_response(entities, friends, text, i) {
     }
 
     //Replace people names with friends' names
-    for (var i = 0; i<people.length; i++) {
-        var person = people[i];
-        var friend = "";
-        if (friends[friend_count != undefined]) {
-            friend = friends[friend_count].name;
-        } else {
-            friend = "Tim";
+    text = replace_text(friends, people, text, friend_map);
+
+    /*
+     * Hardcoded locations because we cannot access location from Facebook
+     * Change this when we get permission from Facebook
+     */
+    text = replace_text(["St Andrews", "Edinburgh", "Dundee", "North Haugh", "The Scores"], places, text);
+
+    return text;
+}
+
+/**
+ * Replace 'api_entities' in 'text' with 'entities'
+ * @param entities - entities to replace the ones in the text with
+ * @param api_entities - the entities in the text
+ * @param text - the text to be changed
+ * @param map - optional map to map entities to api_entities to make sure we replace the same ones
+ *              if not included, the function will generate its own map
+ * @returns {*} - the text after it has been changed
+ */
+function replace_text(entities, api_entities, text, map) {
+    var entity_count = 0;
+    var entity_map = map || {};
+    var new_entity = "";
+
+    for (var i = 0; i<api_entities.length; i++) {
+        var entity = api_entities[i];
+
+        //If we've run out of entities, check again from the start
+        if (entities[entity_count] == undefined) {
+            entity_count = 0;
         }
 
-        //if person is already in the friend map
-        if (friend_map[person.entityId]) {
-            friend = friend_map[person.entityId];
+        new_entity = entities[entity_count]
+
+        //entity_map makes sure that we replace the same entity with the same new_entity
+        if (entity_map[entity.entityId]) {
+            new_entity = entity_map[entity.entityId];
         } else {
-            friend_map[person.entityId] = friend;
-            friend_count++;
-            if (friend_count > friends.length) {
-                friends[friend_count] = "Tim";
-            }
+            entity_map[entity.entityId] = new_entity;
+            entity_count++;
         }
-        text = text.replace(person.matchedText, friend);
+        text = text.replace(entity.matchedText, new_entity);
     }
 
     return text;
 }
 
 /**
- * Return an array of friend objects with attributes 'name' and 'img'
+ * Return an array of friend objects in the form {"name": "", "img": ""}
  * 'name' is the full name of the friend (first name and last name)
  * 'img' is a link to their Facebook profile picture taken from 'fb_friends'
  * @param fb_friends - array of JSON objects which represent each Facebook friend, its fields are specified in facebook.js

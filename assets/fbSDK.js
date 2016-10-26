@@ -9,6 +9,11 @@ window.fbAsyncInit = function() {
     xfbml      : true,
     version    : 'v2.8'
   });
+
+  FB.getLoginStatus(function(response)){
+    // add global var to know that it is initialised
+    loaded = true;
+  });
 };
 
 (function(d, s, id){
