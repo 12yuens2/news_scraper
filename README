@@ -1,0 +1,18 @@
+Software engineering CS3051 Group 9 Project
+
+Accessing our website
+---------------------
+
+Our website can be found on the following url:
+http://mn55.host.cs.st-andrews.ac.uk/news
+
+You will have to login to Facebook to access the generated articles. Because of Facebook permissions, we can only access your friends that also use the app. So if you log in and find no articles populated, it is because you do not have other friends who also use our website. An example image of a working website can be found in the additional documents folder.
+
+Node server
+-----------
+
+We will run the Node.js server on our side to keep the website running. If there is a 502 error when accessing our site, please email mn55@st-andrews.ac.uk to ask about the status of the server.
+
+You can run the node server on your end by using the command:
+  node server.js
+However, because Facebook requires a url of our app to use its API, you will not be able to run your own front end and connect it with the node back end.
