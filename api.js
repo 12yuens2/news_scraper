@@ -139,7 +139,7 @@ function process_response(entities, friends, text, i) {
      * Hardcoded locations because we cannot access location from Facebook
      * Change this when we get permission from Facebook
      */
-    text = replace_text(["St Andrews", "Edinburgh", "Dundee", "North Haugh", "The Scores"], places, text);
+    text = replace_text([{"name": "St Andrews"}, {"name": "Edinburgh"}, {"name": "Dundee"}, {"name": "North Haugh"}, {"name":"The Scores"}], places, text);
 
     return text;
 }
@@ -162,11 +162,14 @@ function replace_text(entities, api_entities, text, map) {
         var entity = api_entities[i];
 
         //If we've run out of entities, check again from the start
-        if (entities[entity_count] == undefined) {
+
+
+        if (entities[entity_count] === undefined) {
             entity_count = 0;
         }
 
-        new_entity = entities[entity_count]
+        new_entity = entities[entity_count].name;
+
 
         //entity_map makes sure that we replace the same entity with the same new_entity
         if (entity_map[entity.entityId]) {

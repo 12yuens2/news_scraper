@@ -16,15 +16,19 @@ if (typeof(Storage) !== "undefined") {
 socket.on('response', function(res){
     articles = [];
 
+    console.log(res);
+
     // Populating the HTML page with articles
     for (var i = 1; i < 13; i++) {
         var col = document.getElementById("col" + i);
 
+        if (res[i - 1] === undefined)
+            continue;
+
         // Deleting the new line characters from the title
         res[i - 1].title = res[i - 1].title.replace(/\n/g, "");
 
-        if (res[i - 1] === undefined)
-            continue;
+
 
        // Adding the articles to the carousel in the top
         if (col.id === "col1" || col.id === "col2" || col.id === "col3" || col.id === "col4") {
