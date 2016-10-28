@@ -5,7 +5,7 @@ var fs = require("fs");
 
 //API constants
 var host = "api.textrazor.com";
-var api_key = "88165ec1a0d94288fce4a214888cd695b38a47f0cf2ec24784ec76fe";
+var api_key = "08f82b5512877f1a5a88e1d9c63f650f4cd152018d00984bb3e1306c";
 
 //Exports for server.js
 module.exports = {

@@ -139,7 +139,8 @@ function get_articles(init_url, base_url, a_class, t_class, p_class, callback) {
 						var title = page(t_class).text();
 						text  = get_text_from_p(page, p_class);
 
-						articles.push(create_article(title, text));
+						var article = create_article(title, text);
+						articles.push(article);
 
 						callCount--;
 
@@ -189,14 +190,13 @@ function write_to_file(articles) {
 
 		if (title != "" && body != "") {
 			nlp.request_api(title, body, function(title_entities, body_entities) {
-                if (body_entities != "" && articles[i].title != "") {
+                if (body_entities != undefined && title != "") {
 
                 	//Always make sure there is a person in the article
                 	var has_person = false;
-                	for (var i = 0; i<body_entities[i]; i++) {
-                		if (body_entities[i].type.indexOf("Person") > -1) {
+                	for (var j = 0; j<body_entities.length; j++) {
+                		if (body_entities[j].type && body_entities[j].type.indexOf("Person") > -1) {
 							has_person = true;
-							break;
 						}
 					}
 
@@ -248,6 +248,9 @@ function get_new_articles() {
 		get_articles("http://www.reuters.com", "http://www.reuters.com", ".story-title a", ".article-headline", "#article-text", write_to_file);
 	});
 }
+
+
+get_new_articles();
 
 /**
  * Schedules new articles to be pulled every day at 09:00am
